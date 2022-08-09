@@ -6,11 +6,11 @@ setBatchMode(true);
 print ("\\Clear");
 
 counter = 0;
-baseChannel = channels[0];
 
 //Here, ajust the channels' specifiers given in the filenames (ch1, ch23, ..., FITC, Cy3, Cy5, ..., etc) and the corresponding colormap to assign.
 channels = newArray("BF", "WL508");
 colors = newArray("Grays", "Green");
+baseChannel = channels[0];
 
 dir = getDirectory("input folder");
 
@@ -32,7 +32,7 @@ for (i=0; i<files.length; i++)
 		    
 		    for (j=1; j<channels.length; j++) //open every related image // other channels and set defined colormap
 		    {
-		         channel = replace(files[i], channels[0], channels[j]);
+		         channel = replace(files[i], baseChannel, channels[j]);
 		         run("Bio-Formats Importer", "open=["+dir+channel+"] color_mode=Default rois_import=[ROI manager] view=Hyperstack stack_order=XYCZT");
 		         wait(1000);
 		         run("8-bit");
@@ -50,7 +50,7 @@ for (i=0; i<files.length; i++)
         run("Merge Channels...", options);
         Stack.setDisplayMode("Composite");
 	
-	    result = replace(files[i], "-"+channels[0], ""); //replace "" by  [toString(channels.length) + "Channels"] to specifiy channels number in output file name
+	    result = replace(files[i], "-"+baseChannel, ""); //replace "" by  [toString(channels.length) + "Channels"] to specifiy channels number in output file name
 	    saveAs("Tiff", dir + result);
 	    close();
 	    merged = true;
