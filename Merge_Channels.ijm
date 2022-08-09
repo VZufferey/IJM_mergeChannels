@@ -30,7 +30,7 @@ for (i=0; i<files.length; i++)
 		    names = newArray(channels.length);
 		    names[0] = files[i];
 		    
-		    for (j=1; j<channels.length; j++) 
+		    for (j=1; j<channels.length; j++) //open every related image // other channels and set defined colormap
 		    {
 		         channel = replace(files[i], channels[0], channels[j]);
 		         run("Bio-Formats Importer", "open=["+dir+channel+"] color_mode=Default rois_import=[ROI manager] view=Hyperstack stack_order=XYCZT");
@@ -39,9 +39,9 @@ for (i=0; i<files.length; i++)
 		         names[j] = channel;
 		         run(colors[j]);
 			}
-
-	    options = "";
-	    for (j=0; j<names.length;j++) 
+		
+	    options = ""; //reinitialisation of merging options
+	    for (j=0; j<names.length;j++) //make options string for subsequent Merge Channels ccommands == list the images names and asociate to a channel number.
 	    {
 	        options = options + "c" + (j+1) + "=" + names[j] + " ";
 	    }
